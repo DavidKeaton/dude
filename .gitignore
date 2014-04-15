@@ -1,0 +1,44 @@
+# Object files
+*.o
+*.ko
+
+# Libraries
+*.lib
+*.a
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+dude
+
+# Vim
+*.vim
+*.swp
+*.session
+*~
+
+# gdb
+.gdbinit
+
+# task
+.task/
+.taskrc
+
+# Directories
+bin/
+dist/
+obj/
+lib/
+include/
+design/
+scripts/
+
+# env
+dude.env
