@@ -17,6 +17,13 @@
 	#define  UTIL_INC
 #include "dude.h"
 
+/* boolean routines */
+int get_boolean(char *value);
+int is_true(const char *value);
+int is_false(const char *value);
+/* list routines */
+unsigned int get_list_length(void **list);
+int append_list_item(void **list, void *item);
 /* file/directory routines */
 int is_directory(const char *path);
 int walk_directory(const char *path);

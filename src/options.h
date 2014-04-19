@@ -15,6 +15,14 @@
 #ifndef  OPTIONS_INC
 	#define  OPTIONS_INC
 /*-----------------------------------------------------------------------------
+ *  preprocessor
+ *-----------------------------------------------------------------------------*/
+/* option type macros */
+#define is_opt_string(x)		(x == OPT_STRING)
+#define is_opt_integer(x)		(x == OPT_INTEGER)
+#define is_opt_boolean(x)		(x == OPT_BOOLEAN)
+#define is_opt_list(x)			(x == OPT_LIST)
+/*-----------------------------------------------------------------------------
  *  enumerations
  *-----------------------------------------------------------------------------*/
 /* option_type_e
@@ -22,11 +30,11 @@
  */
 typedef enum {
 	OPT_NONE,
-	OPT_STRING,
-	OPT_INTEGER,
-	OPT_BOOLEAN,
-	OPT_STRINGLIST,
-    OPT_INTEGERLIST,
+    OPT_STRING,                                 /* (char *) */
+    OPT_INTEGER,                                /* (int) */
+    OPT_BOOLEAN,                                /* (int) */
+    OPT_LIST,                                   /* (void **) */
+	OPT_END
 } option_type_e;
 /* ----------  end of enum option_type_e  ---------- */
 /*-----------------------------------------------------------------------------
@@ -50,10 +58,10 @@ typedef struct {
 /* section   'main' */
 /* ---------------- */
 	/* program settings */
-    int verbose;                                /* should we be verbose? */
-    int silent;                                 /* should we be quiet? */
     char *config;                               /* path to another config file */
     char *logfile;                              /* path to the logfile, or stderr if null */
+    int verbose;                                /* should we be verbose? */
+    int silent;                                 /* should we be quiet? */
     char **wadpath;                             /* paths to search for IWADs and PWADs */
     char *iwad;                                 /* IWAD to load as default */
     char **pwad;                                /* PWAD to load as default */
@@ -111,9 +119,16 @@ typedef struct {
 /*-----------------------------------------------------------------------------
  *  exports
  *-----------------------------------------------------------------------------*/
+/* variables */
 extern int debug_mode;                          /* whether debugging messages will be printed */
 extern settings_t settings;
 extern option_t options[];
-
+/* functions */
+char *get_shortname(char *argument);
+char *get_longname(char *argument);
+int get_optch(char *shortname);
+unsigned int get_index_from_name(char *name);
+char *get_value_from_shortname(char *argument);
+char *get_value_from_longname(char *argument);
 #endif   /* ----- #ifndef OPTIONS_INC  ----- */
 /* vim: set sw=4 ts=4 ft=c: */

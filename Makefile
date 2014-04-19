@@ -23,6 +23,7 @@ dude:
 	make -C src/
 
 clean:
-	make -C lib-src/ clean
+	make -C src/dui/ clean
+	make -C src/inih/ clean
 	make -C src/ clean
 	rm -rf dist lib include

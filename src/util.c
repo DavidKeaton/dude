@@ -20,6 +20,76 @@
 
 /* 
  * ===  FUNCTION  ======================================================================
+ *         Name:  get_boolean
+ *  Description:  Retrieves the boolean value that is represented by the string 'value'.
+ *
+ *  Returns:
+ *  	TRUE			= the 'value' represents 'true'
+ *  	FALSE			= the 'value' represents 'false'
+ *  	ERR				= the 'value' does not represent a boolean value
+ *  	
+ * =====================================================================================
+ */
+int get_boolean(char *value)
+{
+	return TRUE;
+}		/* -----  end of function get_boolean  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  is_true
+ *  Description:  
+ * =====================================================================================
+ */
+int is_true(const char *value)
+{
+	return TRUE;
+}		/* -----  end of function is_true  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  is_false
+ *  Description:  
+ * =====================================================================================
+ */
+int is_false(const char *value)
+{
+	return TRUE;
+}		/* -----  end of function is_false  ----- */
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  get_list_length
+ *  Description:  
+ * =====================================================================================
+ */
+unsigned int get_list_length(void **list)
+{
+	unsigned int i = 0;
+	while(list[i] != NULL) { ++i; }
+	return i;
+}		/* -----  end of function get_length_integerlist  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  append_list_item
+ *  Description:  
+ * =====================================================================================
+ */
+int append_list_item(void **list, void *item)
+{
+	unsigned int len;
+	len = get_list_length(list);
+	list = realloc(list, (sizeof(void *) * (len + 1)));
+	if(!list) {
+		return ERR;
+	}
+	list[len] = strndup(item, MAX_STRING);
+	list[len + 1] = NULL;
+	return OK;
+}		/* -----  end of function append_list_item  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
  *         Name:  is_directory
  *  Description:  Tests whether a path is to a file or a directory. Returns TRUE if the
  *  	path given is a directory, FALSE if it is not.
@@ -53,7 +123,7 @@
 int walk_directory(const char *path)
 {
 	//TODO: IMPLEMENT
-	return E_SUCCESS;
+	return OK;
 }		/* -----  end of function walk_directory  ----- */
 
 /* 
@@ -178,7 +248,7 @@ int num_tokens(const char *str, const char token)
  */
 int tabs_to_spaces(char *array, unsigned int num_spaces)
 {
-	return E_SUCCESS;
+	return OK;
 }		/* -----  end of function tabs_to_spaces  ----- */
 
 /* 
@@ -225,7 +295,7 @@ int align_text(char *dest, unsigned int dest_len, const char *src, text_align_e 
 	memcpy(offset, src, src_len);
 	dest[dest_len - 1] = '\0';
 	log_print(LOG_DEBUG, "align_text [spaces: %d/total: %d]\n\t-> ['%s']", (dest_len - src_len), dest_len, dest);
-	return E_SUCCESS;
+	return OK;
 }		/* -----  end of function align_text  ----- */
 
 

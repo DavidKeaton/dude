@@ -15,6 +15,13 @@
 #ifndef  DUDE_INC
 	#define  DUDE_INC
 /*-----------------------------------------------------------------------------
+ *  game detection
+ *-----------------------------------------------------------------------------*/
+/* determine if game is DOOM or HEXEN, default to DOOM */
+#if !defined(DOOM) && !defined(HEXEN)
+	#define DOOM
+#endif
+/*-----------------------------------------------------------------------------
  *  DUDE constants
  *-----------------------------------------------------------------------------*/
 /* version information */
@@ -52,6 +59,7 @@
 #elif defined(__APPLE__) || defined(__MACH__)
 	#define OS_MACOSX
 #endif
+/* operating system specifics */
 #if defined(OS_WINDOWS)
 	#include <windef.h>
 	#define PATH_DELIMITER	';'
@@ -68,6 +76,18 @@
 	#include <limits.h>
 	#define PATH_DELIMITER	'?'
 	#define DOOMWADDIR 		"$DOOMWADDIR"
+#endif
+
+/*-----------------------------------------------------------------------------
+ *  game dependent constants
+ *-----------------------------------------------------------------------------*/
+/* default wad to load */
+#if defined(DOOM)
+	#define DEFAULT_WAD			"DOOM2.WAD"
+	#define DEFAULT_WAD_DIR		DOOMWADDIR
+#elif defined(HEXEN)
+	#define DEFAULT_WAD			"HEXEN.WAD"
+	#define DEFAULT_WAD_DIR		"FILL_ME_IN"
 #endif
 /*-----------------------------------------------------------------------------
  *  header files
@@ -94,29 +114,31 @@
 /*-----------------------------------------------------------------------------
  *  constants and defines
  *-----------------------------------------------------------------------------*/
+/* curses constants */
+#define ERR             -1                      /* general error */
+#define OK              1                       /* everything is a-okay */
 /* error codes */
 #define E_UNKNOWN       -1                      /* unknown error, possible bug */
-#define E_SUCCESS       0                       /* as the name implies! */
-#define E_USAGE         1                       /* error code for when usage is printed, or version info is printed */
-#define E_NOMEM         2                       /* unable to allocate the necessary memory */
-#define E_BADPTR        3                       /* bad code pointer */
-#define E_BADFILE       4                       /* unable to read/write file for whatever reason */
-#define E_NOFILE        5                       /* unable to find the requested file, as it does not exist */
-#define E_BADARG        6                       /* program argument error (didn't give an argument a value, etc) */
-#define E_BOUNDS        7                       /* at some point we overstepped an array */
-#define E_BADAPR        8                       /* APR error */
-#define E_BADSDL        9                       /* SDL error */
-#define E_BADLENGTH     10                      /* bad length or size of data (string, array, etc) */
-#define E_KEYUSED       11                      /* the key requested has already been bound */
-#define E_BADTYPE		12						/* bad enumerated/constant type given */
-#define E_BADCONFIG     13                      /* error parsing the config file */
-#define E_OSERROR       14                      /* operating system specific error */
+#define E_USAGE         -2                      /* error code for when usage is printed, or version info is printed */
+#define E_NOMEM         -3                      /* unable to allocate the necessary memory */
+#define E_BADPTR        -4                      /* bad code pointer */
+#define E_BADFILE       -5                      /* unable to read/write file for whatever reason */
+#define E_NOFILE        -6                      /* unable to find the requested file, as it does not exist */
+#define E_BADARG        -7                      /* program argument error (didn't give an argument a value, etc) */
+#define E_BOUNDS        -8                      /* at some point we overstepped an array */
+#define E_BADAPR        -9                      /* APR error */
+#define E_BADSDL        -10                     /* SDL error */
+#define E_BADLENGTH     -11                     /* bad length or size of data (string, array, etc) */
+#define E_KEYUSED       -12                     /* the key requested has already been bound */
+#define E_BADTYPE		-13						/* bad enumerated/constant type given */
+#define E_BADCONFIG     -14                     /* error parsing the config file */
+#define E_OSERROR       -15                     /* operating system specific error */
 /* these two are for inih */
 #define E_INIH_ERROR	0
 #define E_INIH_SUCCESS	1
 
+/* base maximum string size capability as APR's maximum path, for compatibility */
 #define MAX_STRING		APR_PATH_MAX
-
 /*-----------------------------------------------------------------------------
  *  enumerations
  *-----------------------------------------------------------------------------*/
@@ -184,13 +206,17 @@ typedef enum {
  *  helper macros
  *-----------------------------------------------------------------------------*/
 /* inih macros */
-#define ini_match(s, n)			strcasecmp(section, s) == 0 && strcmp(name, n) == 0
-#define ini_section(s)			strcasecmp(section, s) == 0
-#define ini_name(n)				strcasecmp(name, n) == 0
+#define ini_match(s, n)			(strcasecmp(section, s) == 0 && strcmp(name, n) == 0)
+#define ini_section(s)			(strcasecmp(section, s) == 0)
+#define ini_name(n)				(strcasecmp(name, n) == 0)
 /* string case-sensitive comparison macro */
-#define match(x, y)				strcmp(x, y) == 0
+#define match(x, y)				(strcmp(x, y) == 0)
+#define match_n(x, y, z)		(strncmp(x, y, z) == 0)
 /* string case-insensitive comparison macro */
-#define match_i(x, y)			strcasecmp(x, y) == 0
+#define match_i(x, y)			(strcasecmp(x, y) == 0)
+#define match_ni(x, y, z)		(strncasecmp(x, y, z) == 0)
+/* validation macros */
+#define is_valid_string(x)		(x != NULL || *x != '\0')
 /*-----------------------------------------------------------------------------
  *  exports
  *-----------------------------------------------------------------------------*/
