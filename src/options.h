@@ -131,4 +131,4 @@ unsigned int get_index_from_name(char *name);
 char *get_value_from_shortname(char *argument);
 char *get_value_from_longname(char *argument);
 #endif   /* ----- #ifndef OPTIONS_INC  ----- */
-/* vim: set sw=4 ts=4 ft=c: */
+/* vim: set sw=4 ts=4 sts=4 ft=cpp expandtab: */

@@ -309,5 +309,5 @@ int align_text(char *dest, unsigned int dest_len, const char *src, text_align_e 
 
 
 
-/* vim: set sw=4 ts=4 ft=c: */
+/* vim: set sw=4 ts=4 sts=4 ft=cpp expandtab: */
 

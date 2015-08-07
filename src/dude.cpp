@@ -276,4 +276,4 @@ int print_awesome(FILE *where)
 
 
 
-/* vim: set sw=4 ts=4 ft=c: */
+/* vim: set sw=4 ts=4 sts=4 ft=cpp expandtab: */

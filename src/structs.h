@@ -310,5 +310,5 @@ typedef struct {
 } dude_t;
 /* ----------  end of struct dude_t  ---------- */
 #endif   /* ----- #ifndef STRUCTS_INC  ----- */
-/* vim: set sw=4 ts=4 ft=c: */
+/* vim: set sw=4 ts=4 sts=4 ft=cpp expandtab: */
 

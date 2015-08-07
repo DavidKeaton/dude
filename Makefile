@@ -6,37 +6,59 @@ ODIR		= obj
 LDIR		= lib
 IDIR		= include
 #==============================================================================
-#DEFINES		= -D_LARGEFILE64_SOURCE -DDEBUG
+#DEFINES	= -D_LARGEFILE64_SOURCE -DDEBUG
 DEFINES		= -DDEBUG
-WARNINGS	= -Wall -Wno-multichar -Wno-switch -Wno-unused-label
+WARNINGS	= -Wall
 CCFLAGS		= -std=c99 -Wall
 CXXFLAGS	= -std=c++11 -I$(IDIR) -L$(LDIR)
 #==============================================================================
-SOURCES 	= $(wildcard $(SDIR)/%.cpp)
-OBJECTS		= $(wildcard %,$(ODIR)/%.o, $(SOURCES))
+SRCS 		= $(wildcard $(SDIR)/*.cpp)
+OBJS		= $(wildcard %,$(ODIR)/%.o, $(SRCS))
 LIBS		= $(LDIR)/libinih.a
 #==============================================================================
+# -=[Release Build]=-
 ifeq ($(RELEASE), 1)
-  CXXFLAGS 	+= -O3 -Os -s
+  CXXFLAGS += -O3 -Os -s
 else
-  CXXFLAGS 	+= -g
+  CXXFLAGS += -g
 endif
+# -=[SDL/Graphical Build]=-
+ifeq ($(SDL), 1)
+  LIBS += -lSDL
+else
+  LIBS += -lncurses
+endif
+#==============================================================================
 CFLAGS		+= $(CCFLAGS) $(WARNINGS) $(DEFINES)
 CPPFLAGS	+= $(CXXFLAGS) $(WARNINGS) $(DEFINES)
 #==============================================================================
-dude: $(ODIR) $(LDIR)/libinih.a $(OBJECTS)
-	$(CXX) -o $@ $(CPPFLAGS) $(OBJECTS) $(LIBS)
+CC			:= $(CROSS)$(CC)
+CXX			:= $(CROSS)$(CXX)
+#==============================================================================
+dude: $(ODIR) $(LDIR)/libinih.a $(OBJS)
+	$(CXX) -o $@ $(CPPFLAGS) $(OBJS) $(LIBS)
 
 $(ODIR)/%.o: $(SDIR)/%.cpp
 	$(CXX) -c $(CPPFLAGS) -o $@ $<
 
-$(LDIR)/libinih.a: src/inih/ini.c
-	$(CC) -o $@ $(CFLAGS) $^
+$(LDIR)/libinih.a: $(LDIR) $(IDIR) $(ODIR)/libini.o
+	ar rcs $@ $(ODIR)/libini.o
+	mkdir -p $(IDIR)/inih
+	cp $(SDIR)/inih/ini.h $(IDIR)/inih/ini.h
+
+$(ODIR)/libini.o: $(SDIR)/inih/ini.c
+	$(CC) -c -o $@ $(CFLAGS) $^
 #==============================================================================
 $(ODIR):
 	mkdir -p $(ODIR)
+
+$(LDIR):
+	mkdir -p $(LDIR)
+
+$(IDIR):
+	mkdir -p $(IDIR)
 #==============================================================================
 .PHONY: clean
 clean:
-	rm -rf $(ODIR)/
+	rm -rf $(ODIR)/ $(LDIR)/
 #==============================================================================

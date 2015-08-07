@@ -4,7 +4,7 @@
 
 #define  deth_font     FONTNAME_TEMPORARY_REDIRECTION
 /* TODO: We won't need this information if we just use the bits to draw to the screen! */
-#include "include/grx20.h"
+/*#include "include/grx20.h"*/
 #undef   deth_font
 
 static unsigned char far deth_font_bits[] = {
@@ -327,4 +327,4 @@ struct {
 	}
 };
 
-/* vim: set sw=4 ts=4: */
+/* vim: set sw=4 ts=4 sts=4 ft=cpp expandtab: */

@@ -140,5 +140,5 @@ typedef struct {
 } PColumn;
 
 #endif
-/* vim: set sw=4 ts=4: */
+/* vim: set sw=4 ts=4 sts=4 ft=cpp expandtab: */
 

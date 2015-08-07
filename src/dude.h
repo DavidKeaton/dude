@@ -72,12 +72,12 @@
 	#include <linux/limits.h>
 	#define PATH_DELIMITER	':'
 	#define DOOMWADDIR 		"$DOOMWADDIR"
-#elif defined(OS_MACOSX)                        //FIXME: What is the path delimiter on MACOSX? The default DOOM directory?
+#elif defined(OS_MACOSX)                        
+//FIXME: What is the path delimiter on MACOSX? The default DOOM directory?
 	#include <limits.h>
 	#define PATH_DELIMITER	'?'
 	#define DOOMWADDIR 		"$DOOMWADDIR"
 #endif
-
 /*-----------------------------------------------------------------------------
  *  game dependent constants
  *-----------------------------------------------------------------------------*/
@@ -95,28 +95,25 @@
 /* DUDE */
 //#include "log.h"
 //#include "util.h"
+
 /* C */
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
-#include <math.h>
-/* APR */
-#include <apr-1/apr_general.h>
-#include <apr-1/apr_strings.h>
-#include <apr-1/apr_getopt.h>
-#include <apr-1/apr_file_info.h>
-#include <apr-1/apr_tables.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <ctime>
+#include <cmath>
+#if defined(SDL)
 /* SDL */
 #include <SDL2/SDL.h>
+#endif
 /* INIH */
 #include <inih/ini.h>
 /*-----------------------------------------------------------------------------
  *  constants and defines
  *-----------------------------------------------------------------------------*/
-/* curses constants */
-#define ERR             -1                      /* general error */
-#define OK              1                       /* everything is a-okay */
+/**//* curses constants */
+/*#define ERR             -1                      *//* general error */
+/*#define OK              1                       *//* everything is a-okay */
 /* error codes */
 #define E_UNKNOWN       -1                      /* unknown error, possible bug */
 #define E_USAGE         -2                      /* error code for when usage is printed, or version info is printed */
@@ -126,7 +123,7 @@
 #define E_NOFILE        -6                      /* unable to find the requested file, as it does not exist */
 #define E_BADARG        -7                      /* program argument error (didn't give an argument a value, etc) */
 #define E_BOUNDS        -8                      /* at some point we overstepped an array */
-#define E_BADAPR        -9                      /* APR error */
+/*#define E_BADAPR        -9                      *//* APR error */
 #define E_BADSDL        -10                     /* SDL error */
 #define E_BADLENGTH     -11                     /* bad length or size of data (string, array, etc) */
 #define E_KEYUSED       -12                     /* the key requested has already been bound */
@@ -136,26 +133,23 @@
 /* these two are for inih */
 #define E_INIH_ERROR	0
 #define E_INIH_SUCCESS	1
-
-/* base maximum string size capability as APR's maximum path, for compatibility */
-#define MAX_STRING		APR_PATH_MAX
 /*-----------------------------------------------------------------------------
  *  enumerations
  *-----------------------------------------------------------------------------*/
-/* log_level_e
+/** log_level_e
  * Determines the level of logging that takes place, based on how
  * important the information is.
  */
 typedef enum {
-    LOG_DEBUG,                                  /* debugging information (calls with arguments, return values) */
-    LOG_INFO,                                   /* non-error information ('loaded doom2.wad as main iwad') */
-    LOG_WARN,                                   /* non-critical errors ('exporting map before building nodes and rejects') */
-    LOG_ERROR,                                  /* critical errors ('unable to load WAD, does not exist') */
-    LOG_FATAL                                   /* fatal errors ('unable to allocate memory for internal structures') */
+    LOG_DEBUG,  // debugging information (calls with arguments, return values)
+    LOG_INFO,   // non-error information ('loaded doom2.wad as main iwad')
+    LOG_WARN,   // non-critical errors ('exporting map before building nodes and rejects')
+    LOG_ERROR,  // critical errors ('unable to load WAD, does not exist')
+    LOG_FATAL   // fatal errors ('unable to allocate memory for internal structures')
 } log_level_e;
 /* ----------  end of enum log_level_e  ---------- */
 
-/* text_align_e
+/** text_align_e
  * How to determine what sort of text alignment is to occur.
  */
 typedef enum {
@@ -165,7 +159,7 @@ typedef enum {
 } text_align_e;
 /* ----------  end of enum text_align_e  ---------- */
 
-/* editor_function_e
+/** editor_function_e
  * Defines editor functions, to use in a key array to determine
  * what routine needs to be done for said key.
  */
@@ -223,4 +217,4 @@ typedef enum {
 /* exported functions */
 /* exported variables */
 #endif   /* ----- #ifndef DUDE_INC  ----- */
-/* vim: set sw=4 ts=4 ft=c: */
+/* vim: set sw=4 ts=4 sts=4 ft=cpp expandtab: */

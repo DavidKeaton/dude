@@ -328,4 +328,4 @@ char *get_value_from_longname(char *argument)
 {
 	return get_value_from_name(argument, TYPE_LONGNAME);
 }		/* -----  end of function get_value_from_longname  ----- */
-/* vim: set sw=4 ts=4 ft=c: */
+/* vim: set sw=4 ts=4 sts=4 ft=cpp expandtab: */

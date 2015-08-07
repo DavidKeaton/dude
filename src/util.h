@@ -36,5 +36,5 @@ int num_tokens(const char *str, const char token);
 int tabs_to_spaces(char *array, unsigned int num_spaces);
 int align_text(char *dest, unsigned int desT_len, const char *src, text_align_e alignment);
 #endif   /* ----- #ifndef UTIL_INC  ----- */
-/* vim: set sw=4 ts=4 ft=c: */
+/* vim: set sw=4 ts=4 sts=4 ft=cpp expandtab: */
 

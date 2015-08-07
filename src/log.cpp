@@ -166,5 +166,5 @@ int log_print(log_level_e log_level, char *fmt, ...)
 
 
 
-/* vim: set sw=4 ts=4 ft=c: */
+/* vim: set sw=4 ts=4 sts=4 ft=cpp expandtab: */
 

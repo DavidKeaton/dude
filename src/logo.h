@@ -38,3 +38,4 @@ char dude_logo[] = {
 };
 
 #endif   /* ----- #ifndef LOGO_INC  ----- */
+/* vim: set sw=4 ts=4 sts=4 ft=cpp expandtab: */
