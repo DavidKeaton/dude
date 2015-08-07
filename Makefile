@@ -1,35 +1,42 @@
-D_LIB		= ../lib
-D_INCLUDE	= ../include 
+#==============================================================================
+TARGET		= dude
+#==============================================================================
+SDIR		= src
+ODIR		= obj
+LDIR		= lib
+IDIR		= include
+#==============================================================================
+#DEFINES		= -D_LARGEFILE64_SOURCE -DDEBUG
+DEFINES		= -DDEBUG
+WARNINGS	= -Wall -Wno-multichar -Wno-switch -Wno-unused-label
+CCFLAGS		= -std=c99 -Wall
+CXXFLAGS	= -std=c++11 -I$(IDIR) -L$(LDIR)
+#==============================================================================
+SOURCES 	= $(wildcard $(SDIR)/%.cpp)
+OBJECTS		= $(wildcard %,$(ODIR)/%.o, $(SOURCES))
+LIBS		= $(LDIR)/libinih.a
+#==============================================================================
+ifeq ($(RELEASE), 1)
+  CXXFLAGS 	+= -O3 -Os -s
+else
+  CXXFLAGS 	+= -g
+endif
+CFLAGS		+= $(CCFLAGS) $(WARNINGS) $(DEFINES)
+CPPFLAGS	+= $(CXXFLAGS) $(WARNINGS) $(DEFINES)
+#==============================================================================
+dude: $(ODIR) $(LDIR)/libinih.a $(OBJECTS)
+	$(CXX) -o $@ $(CPPFLAGS) $(OBJECTS) $(LIBS)
 
-CDEFINES	= -D_LARGEFILE64_SOURCE -DDEBUG
-CWARNINGS	= -Wall -Wno-multichar -Wno-switch -Wno-unused-label
-CFLAGS		= -std=c99 $(CDEFINES) $(CWARNINGS) -I$(D_INCLUDE) -L$(D_LIB) -g
-#LIBS		= $(D_LIB)/libdui.a $(D_LIB)/libinih.a -lapr-1 -lSDL2
-LIBS		= -lapr-1 -lSDL2
+$(ODIR)/%.o: $(SDIR)/%.cpp
+	$(CXX) -c $(CPPFLAGS) -o $@ $<
 
-.SILENT: dude clean
+$(LDIR)/libinih.a: src/inih/ini.c
+	$(CC) -o $@ $(CFLAGS) $^
+#==============================================================================
+$(ODIR):
+	mkdir -p $(ODIR)
+#==============================================================================
 .PHONY: clean
-
-SRC = \
-      dude.c log.c util.c options.c
-
-OBJS = $(SRC:.c=.o)
-
-dude: $(OBJS)
-	$(CC) -o $@ $(CFLAGS) $^ $(LIBS)
-
-dude.o: dude.c
-	$(CC) -c $(CFLAGS) $<
-
-log.o: log.c
-	$(CC) -c $(CFLAGS) $<
-
-util.o: util.c
-	$(CC) -c $(CFLAGS) $<
-
-options.o: options.c
-	$(CC) -c $(CFLAGS) $<
-
 clean:
-	rm -f *.o dude dude.exe
-
+	rm -rf $(ODIR)/
+#==============================================================================
