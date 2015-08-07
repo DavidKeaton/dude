@@ -1,7 +1,7 @@
 D_LIB		= ../lib
 D_INCLUDE	= ../include 
 
-CC		= colorgcc
+#CC		= colorgcc
 CDEFINES	= -D_LARGEFILE64_SOURCE -DDEBUG
 CWARNINGS	= -Wall -Wno-multichar -Wno-switch -Wno-unused-label
 CFLAGS		= -std=c99 $(CDEFINES) $(CWARNINGS) -I$(D_INCLUDE) -L$(D_LIB) -g

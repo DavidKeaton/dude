@@ -11,7 +11,7 @@ d_lib:
 	mkdir -p include/dui
 	mkdir -p include/inih
 
-lib: |d_lib
+lib: d_lib
 	make -C src/dui/
 	mv src/dui/libdui.a lib/
 	cp src/dui/dui.h include/dui/dui.h
