@@ -39,6 +39,7 @@ lib/
 include/
 design/
 scripts/
+.old/
 
 # env
 dude.env

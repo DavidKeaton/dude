@@ -1,29 +1,35 @@
-.SILENT: all clean
-.PHONY: d_dist libs dude clean
-all: lib dude |d_dist
-	mv src/dude dist/dude
+D_LIB		= ../lib
+D_INCLUDE	= ../include 
 
-d_dist:
-	mkdir -p dist
+CDEFINES	= -D_LARGEFILE64_SOURCE -DDEBUG
+CWARNINGS	= -Wall -Wno-multichar -Wno-switch -Wno-unused-label
+CFLAGS		= -std=c99 $(CDEFINES) $(CWARNINGS) -I$(D_INCLUDE) -L$(D_LIB) -g
+#LIBS		= $(D_LIB)/libdui.a $(D_LIB)/libinih.a -lapr-1 -lSDL2
+LIBS		= -lapr-1 -lSDL2
 
-d_lib:
-	mkdir -p lib
-	mkdir -p include/dui
-	mkdir -p include/inih
+.SILENT: dude clean
+.PHONY: clean
 
-lib: d_lib
-	make -C src/dui/
-	mv src/dui/libdui.a lib/
-	cp src/dui/dui.h include/dui/dui.h
-	make -C src/inih/
-	mv src/inih/libinih.a lib/
-	cp src/inih/ini.h include/inih/ini.h
+SRC = \
+      dude.c log.c util.c options.c
 
-dude:
-	make -C src/
+OBJS = $(SRC:.c=.o)
+
+dude: $(OBJS)
+	$(CC) -o $@ $(CFLAGS) $^ $(LIBS)
+
+dude.o: dude.c
+	$(CC) -c $(CFLAGS) $<
+
+log.o: log.c
+	$(CC) -c $(CFLAGS) $<
+
+util.o: util.c
+	$(CC) -c $(CFLAGS) $<
+
+options.o: options.c
+	$(CC) -c $(CFLAGS) $<
 
 clean:
-	make -C src/dui/ clean
-	make -C src/inih/ clean
-	make -C src/ clean
-	rm -rf dist lib include
+	rm -f *.o dude dude.exe
+
