@@ -1,23 +1,10 @@
-/*
- * ==================================================================================
- *
- *       Filename:  structs.h
- *
- *    Description:  Universal structures for the project.
- *
- *        Created:  03/27/2014 10:58:03 PM
- *
- *         Author:  David Keaton (davek), DavekDOS@gmail.com
- *
- * ==================================================================================
- */
-
 #ifndef  STRUCTS_INC
-	#define  STRUCTS_INC
+#define  STRUCTS_INC
+
 #include "const.h"
-#include <apr-1/apr_general.h>
-#include <apr-1/apr_tables.h>
+#if defined(SDL)
 #include <SDL2/SDL.h>
+#endif
 
 
 /* log_level_e
@@ -38,8 +25,8 @@ typedef enum {
  * what routine needs to be done for said key.
  */
 typedef enum {
-	/* movement and zooming */
-	EF_VIEWPORT							= 0x1000,
+    /* movement and zooming */
+    EF_VIEWPORT							= 0x1000,
     EF_VIEWPORT_LEFT,                           /* move the editor's view left */
     EF_VIEWPORT_RIGHT,                          /* move the editor's view right */
     EF_VIEWPORT_UP,                             /* move the editor's view up */
@@ -47,15 +34,15 @@ typedef enum {
     EF_VIEWPORT_ZOOM_IN,                        /* zoom in the grid scale (show more detail) */
     EF_VIEWPORT_ZOOM_OUT,                       /* zoom out the grid scale (show more map) */
     EF_VIEWPORT_ZOOM_DEFAULT,                   /* set the zoom back to the configured default */
-	/* object manipulation */
-	EF_OBJECT							= 0x2000,
+    /* object manipulation */
+    EF_OBJECT							= 0x2000,
     EF_OBJECT_INSERT,                           /* insert an object under the cursor (or merge objects) */
     EF_OBJECT_DELETE,                           /* delete the selected objects/object under cursor */
     EF_OBJECT_CUT,                              /* delete the object and store in temp reg */
     EF_OBJECT_COPY,                             /* copy the object in temp reg */
     EF_OBJECT_PASTE,                            /* place the object in the temp reg, under the cursor */
-	/* main program functions */
-	EF_PROGRAM							= 0xF000,
+    /* main program functions */
+    EF_PROGRAM							= 0xF000,
     EF_PROGRAM_SAVE_SETTINGS,                   /* save the changes to the settings */
     EF_PROGRAM_QUIT,                            /* quit the program! */
     EF_NULL                                     /* sentinel */
@@ -73,9 +60,9 @@ typedef enum {
  * How to determine what sort of text alignment is to occur.
  */
 typedef enum {
-	TEXT_ALIGN_LEFT,
-	TEXT_ALIGN_CENTER,
-	TEXT_ALIGN_RIGHT
+    TEXT_ALIGN_LEFT,
+    TEXT_ALIGN_CENTER,
+    TEXT_ALIGN_RIGHT
 } text_align_e;
 /* ----------  end of enum text_align_e  ---------- */
 
@@ -84,24 +71,24 @@ typedef enum {
  * as where the option came from.
  */
 typedef enum {
-	/* what kind of option is it? */
-	OPT_ERROR,
-	OPT_NONE,
-	OPT_STRING,
+    /* what kind of option is it? */
+    OPT_ERROR,
+    OPT_NONE,
+    OPT_STRING,
     OPT_PATH,                                   /* directory/file path (is an array) */
-	OPT_INTEGER,
-	OPT_BOOLEAN,
+    OPT_INTEGER,
+    OPT_BOOLEAN,
     OPT_KEY,                                    /* keyboard keys for customization */
     OPT_ARRAY,                                  /* array of strings */
     OPT_NUMLIST,                                /* list of numbers */
     OPT_CUSTOM,                                 /* custom option, like for extensions (that don't have a set name) */
-	OPT_START,
-	OPT_END
+    OPT_START,
+    OPT_END
 } option_type_e;
 /* ----------  end of enum option_type_e  ---------- */
 
 typedef enum {
-	/* where did it come from? */
+    /* where did it come from? */
     FROM_NULL           = 0,                    /* if where it's from doesn't matter (get functions) */
     FROM_DEFAULT        = 1,                    /* default setting */
     FROM_CONFIG         = 2,                    /* config setting */
@@ -115,14 +102,14 @@ typedef enum {
  * The type of element of a settings substruct.
  */
 typedef enum {
-	ET_FROM,
-	ET_TYPE,
-	ET_IS_CLI_ARG,
-	ET_NAME,
-	ET_OPTCH,
-	ET_HAS_ARG,
-	ET_DESCRIPTION,
-	ET_VALUE
+    ET_FROM,
+    ET_TYPE,
+    ET_IS_CLI_ARG,
+    ET_NAME,
+    ET_OPTCH,
+    ET_HAS_ARG,
+    ET_DESCRIPTION,
+    ET_VALUE
 } element_type_e;
 /* ----------  end of enum element_type_e  ---------- */
 
@@ -130,8 +117,8 @@ typedef enum {
  * How 'access_setting_element' behaves to said element.
  */
 typedef enum {
-	EA_READ,
-	EA_WRITE
+    EA_READ,
+    EA_WRITE
 } element_access_e;
 /* ----------  end of enum element_access_e  ---------- */
 
@@ -140,7 +127,7 @@ typedef enum {
  * by every element.
  */
 typedef struct {
-	option_from_e from;
+    option_from_e from;
     option_type_e type;
     int is_cli_arg;                             /* is this a command line argument? */
     const char *name;                           /* longname of the argument */
@@ -151,8 +138,8 @@ typedef struct {
 /* ----------  end of struct setting_t  ---------- */
 
 typedef struct {
-	setting_t info;
-	char *value;
+    setting_t info;
+    char *value;
 } setting_string_t;
 /* ----------  end of struct setting_string_t  ---------- */
 //TODO: Determine if a simple typedef is how we want to go with 'setting_path_t'
@@ -161,8 +148,8 @@ typedef setting_string_t setting_sentinel_t;
 typedef setting_string_t setting_path_t;
 
 typedef struct {
-	setting_t info;
-	apr_int64_t value;
+    setting_t info;
+    apr_int64_t value;
 } setting_integer_t;
 /* ----------  end of struct setting_integer_t  ---------- */
 typedef setting_integer_t setting_boolean_t;
@@ -182,26 +169,26 @@ typedef struct {
 /* ----------  end of struct key_t  ---------- */
 
 typedef struct {
-	setting_t info;
-	keybinding_t value;
+    setting_t info;
+    keybinding_t value;
 } setting_key_t;
 /* ----------  end of struct setting_key_t  ---------- */
 
 typedef struct {
-	setting_t info;
-	apr_array_header_t *value;
+    setting_t info;
+    apr_array_header_t *value;
 } setting_array_t;
 /* ----------  end of struct setting_array_t  ---------- */
 
 typedef struct {
-	setting_t info;
-	int *value;
+    setting_t info;
+    int *value;
 } setting_numlist_t;
 /* ----------  end of struct setting_numlist_t  ---------- */
 
 typedef struct {
-	setting_t info;
-	char value[MAX_DOOMSTRING];
+    setting_t info;
+    char value[MAX_DOOMSTRING];
 } setting_doomstr_t;
 /* ----------  end of struct setting_doomstring_t  ---------- */
 
@@ -222,68 +209,68 @@ typedef struct {
  */
 typedef struct {
     int registered;                             /* whether the game is registered or not */
-/* ---------------- */
-/* section   'main' */
-/* ---------------- */
+    /* ---------------- */
+    /* section   'main' */
+    /* ---------------- */
     setting_sentinel_t start;                   /* start sentinel for automated parsing options */
-	setting_boolean_t verbose;              	/* should we be verbose? */
-	setting_boolean_t quiet;                	/* should we be quiet? */
-	setting_boolean_t debug;                	/* print debugging information? */
-	setting_path_t config;                  	/* path to another config file */
-	setting_path_t logfile;                 	/* path to the logfile, or stderr if null */
-	setting_path_t iwad_dir;                	/* IWAD directory */
-	setting_path_t iwad;                    	/* IWAD to load as default */
-	setting_path_t pwad_dir;                	/* PWAD directory */
-	setting_array_t pwad;                    	/* PWAD to load as default */
+    setting_boolean_t verbose;              	/* should we be verbose? */
+    setting_boolean_t quiet;                	/* should we be quiet? */
+    setting_boolean_t debug;                	/* print debugging information? */
+    setting_path_t config;                  	/* path to another config file */
+    setting_path_t logfile;                 	/* path to the logfile, or stderr if null */
+    setting_path_t iwad_dir;                	/* IWAD directory */
+    setting_path_t iwad;                    	/* IWAD to load as default */
+    setting_path_t pwad_dir;                	/* PWAD directory */
+    setting_array_t pwad;                    	/* PWAD to load as default */
 //TODO: Fill in more!
-	setting_none_t help;                  		/* usage */
-	setting_none_t version;               		/* version info */
-/* ---------------- */
-/* section 'editor' */
-/* ---------------- */
-	/* grid settings */
+    setting_none_t help;                  		/* usage */
+    setting_none_t version;               		/* version info */
+    /* ---------------- */
+    /* section 'editor' */
+    /* ---------------- */
+    /* grid settings */
     setting_integer_t grid_scale;               /* grid zoom level on startup */
     setting_integer_t grid_minimum;             /* smallest size of the grid scale */
     setting_integer_t grid_maximum;             /* largest size of the grid scale */
     setting_boolean_t grid_dashed;              /* whether the grid is displayed as a dash or a line */
     setting_boolean_t grid_hide;                /* whether the grid is shown or not */
-	/* sector settings */
+    /* sector settings */
     setting_integer_t ceiling_height;           /* height of a ceiling on sector creation */
     setting_integer_t floor_height;             /* height of a floor on sector creation */
     setting_integer_t lighting;                 /* default sector lighting */
-	setting_boolean_t increment_sector_tag;		/* should we auto increment the sector tag? */
-	/* input settings */
+    setting_boolean_t increment_sector_tag;		/* should we auto increment the sector tag? */
+    /* input settings */
     setting_integer_t scroll_factor;            /* how far a mouse scroll will move the editor */
-	/* show something settings */
+    /* show something settings */
     setting_boolean_t show_info;                /* show information about the objects in the editor */
     setting_boolean_t show_extended_info;       /* show extended information about the objects in the editor */
     setting_boolean_t show_map_preview;         /* should we show a small preview of the map while browsing the patch wad? */
     setting_boolean_t show_distance;            /* whether we should calculate the distance between two objects and display it */
     setting_boolean_t show_textures;            /* whether we should fill in the sector with its ground texture */
     setting_boolean_t show_things;              /* whether things are shown in the editor or hidden */
-	/* editor settings */
+    /* editor settings */
     setting_integer_t expert_mode;              /* whether we should ask for overwrite confirmation */
     setting_boolean_t copy_sidedefs;            /* whether the attributes of the prior sidedef are carried to a new one */
     setting_boolean_t special_effects;          /* whether the errors used by special effects are shown or not */
-	/* default texture names */
-	setting_doomstr_t wall_texture;
-	setting_doomstr_t upper_texture;
-	setting_doomstr_t lower_texture;
-	setting_doomstr_t floor_texture;
-	setting_doomstr_t ceiling_texture;
-	setting_doomstr_t doortrack_texture;
-	setting_doomstr_t door_texture;
-	setting_doomstr_t upper_step_texture;
-	setting_doomstr_t lower_step_texture;
-	setting_doomstr_t teleport_texture;
-/* ---------------- */
-/* section   'keys' */
-/* ---------------- */
-	struct {
-		setting_key_t object_insert;			/* insert an object under the cursor */
-		setting_key_t program_quit;				/* quit DUDE */
-	} keymap;
-	setting_path_t *extensions;
+    /* default texture names */
+    setting_doomstr_t wall_texture;
+    setting_doomstr_t upper_texture;
+    setting_doomstr_t lower_texture;
+    setting_doomstr_t floor_texture;
+    setting_doomstr_t ceiling_texture;
+    setting_doomstr_t doortrack_texture;
+    setting_doomstr_t door_texture;
+    setting_doomstr_t upper_step_texture;
+    setting_doomstr_t lower_step_texture;
+    setting_doomstr_t teleport_texture;
+    /* ---------------- */
+    /* section   'keys' */
+    /* ---------------- */
+    struct {
+        setting_key_t object_insert;			/* insert an object under the cursor */
+        setting_key_t program_quit;				/* quit DUDE */
+    } keymap;
+    setting_path_t *extensions;
     ini_section_t sections[SUBSTRUCT_COUNT];    /* contains section names and addr, initialize with static value */
     setting_sentinel_t end;                     /* delimits the end of the automated parsing options */
 } settings_t;
@@ -293,16 +280,16 @@ typedef struct {
  * Stores APR memory pools for the session.
  */
 typedef struct {
-	apr_pool_t *root;
-	apr_pool_t *file;
-	apr_pool_t *config;
-	apr_pool_t *strings;
+    apr_pool_t *root;
+    apr_pool_t *file;
+    apr_pool_t *config;
+    apr_pool_t *strings;
 } mp_t;
 /* ----------  end of struct mp_t  ---------- */
 
 /* dude_t
  * Main structure, to house most important global objects
- */ 
+ */
 typedef struct {
     mp_t mp;                                    /* how can I hold all these pools? */
     dude_mode_e mode;                           /* what mode of the program are we currently in? */

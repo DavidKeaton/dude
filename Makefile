@@ -9,7 +9,7 @@ IDIR		= include
 #DEFINES	= -D_LARGEFILE64_SOURCE -DDEBUG
 DEFINES		= -DDEBUG
 WARNINGS	= -Wall
-CCFLAGS		= -std=c99 -Wall
+CFLAGS	   += -std=c99 -Wall -O3 -s -DINI_MAX_LINE=2048
 CXXFLAGS	= -std=c++11 -I$(IDIR) -L$(LDIR)
 #==============================================================================
 SRCS 		= $(wildcard $(SDIR)/*.cpp)
@@ -29,11 +29,9 @@ else
   LIBS += -lncurses
 endif
 #==============================================================================
-CFLAGS		+= $(CCFLAGS) $(WARNINGS) $(DEFINES)
-CPPFLAGS	+= $(CXXFLAGS) $(WARNINGS) $(DEFINES)
-#==============================================================================
 CC			:= $(CROSS)$(CC)
 CXX			:= $(CROSS)$(CXX)
+CPPFLAGS	+= $(CXXFLAGS) $(WARNINGS) $(DEFINES)
 #==============================================================================
 dude: $(ODIR) $(LDIR)/libinih.a $(OBJS)
 	$(CXX) -o $@ $(CPPFLAGS) $(OBJS) $(LIBS)

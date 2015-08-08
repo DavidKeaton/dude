@@ -24,6 +24,9 @@ dude
 *.session
 *~
 
+# astyle
+*.orig
+
 # gdb
 .gdbinit
 
